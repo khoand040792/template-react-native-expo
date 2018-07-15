@@ -7,7 +7,6 @@ import { createStackNavigator, createDrawerNavigator } from 'react-navigation';
  */
 import HomeScreen from '../screens/home/HomeScreen';
 import LoginScreen from '../screens/account/LoginScreen';
-import SignupScreen from '../screens/account/SignupScreen';
 /*
  * Component
  * 
@@ -20,12 +19,6 @@ const HomeStack = createStackNavigator({
 
 HomeStack.navigationOptions = {
   tabBarLabel: 'Trang chủ',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={'ios-home'}
-    />
-  ),
 };
 
 const drawerNavigator = createDrawerNavigator({
@@ -43,9 +36,7 @@ const drawerNavigator = createDrawerNavigator({
 
 // login stack
 const LoginStack = createStackNavigator({
-  loginScreen: { screen: LoginScreen },
-  signupScreen: { screen: SignupScreen },
-  fPasswordScreen: { screen: ForgotPasswordScreen }
+  loginScreen: { screen: LoginScreen }
 }, {
     navigationOptions: {
       headerStyle: { backgroundColor: '#fff' },

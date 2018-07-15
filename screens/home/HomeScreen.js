@@ -8,10 +8,20 @@ export default class HomeScreen extends React.Component {
     return HeaderNavigation(navigation, "Home");
   }
 
+  logout = () => {
+    this.props.navigation.popToTop();
+  }
+
   render() {
     return (
       <View style={styles.container}>
-          
+        <Text style={styles.txtTitle}>Welcome Back!</Text>
+        <TouchableHighlight
+          style={styles.btnLogout}
+          onPress={this.logout}
+        >
+          <Text style={styles.txtBtnLogout}>Logout</Text>
+        </TouchableHighlight>
       </View>
     );
   }
@@ -20,35 +30,22 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-  },
-  contentContainer: {
-    paddingTop: 20,
-  },
-  welcomeContainer: {
+    backgroundColor: '#02b294',
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 5,
-    marginBottom: 15,
-    overflow: 'hidden'
   },
-  welcomeImage: {
-    width: '90%',
-    height: 110,
-    marginTop: 3,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#fff',
-  },
-  titleOverImage: {
-    margin: 24,
-    fontSize: 30,
+  txtTitle: {
     fontWeight: 'bold',
-    textAlign: 'center',
-    color: 'white',
-    backgroundColor: 'transparent',
+    fontSize: 30
   },
-  headerTitle: {
-    fontSize: 13,
-    color: 'white',
+  btnLogout: {
+    backgroundColor: '#1f8696',
+    height: 50,
+    width: '90%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  txtBtnLogout: {
+    fontSize: 20
   }
 });

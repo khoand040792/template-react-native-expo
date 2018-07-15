@@ -5,80 +5,18 @@ import {
 } from 'react-native';
 import InputIcon from '../../components/InputIcon';
 import { Ionicons } from '@expo/vector-icons';
-import LoginFacebook from '../../components/LoginFacebook';
 import ResponseApi from '../../api/ResponseApi';
 import SpinFullScreen from '../../components/ActivityIndicator';
-import { Login } from '../../api/ApiUtilities';
-import Secret from '../../constants/Secret';
-import { SaveTokenDevice } from '../../api/ApiUtilities';
-import { Permissions, Notifications } from 'expo';
 
 export default class LoginScreen extends Component {
     static navigationOptions = {
         header: null
     }
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            username: 'khoand@gmail.com', // null
-            password: '123456', // null
-            showSpiner: false,
-        }
-
-        // check has login
-        this.isLoginBefore();
-    }
-
-    /**
-     * @param {*} token : string // token api request header
-     */
-    async registerPushNotifyAsync(token) {
-        const { status: existingStatus } = await Permissions.getAsync(
-            Permissions.NOTIFICATIONS
-        );
-        let finalStatus = existingStatus;
-
-        // only ask if permissions have not already been determined, because
-        // iOS won't necessarily prompt the user a second time.
-        if (existingStatus !== 'granted') {
-            // Android remote notification permissions are granted during the app
-            // install, so this will only ask on iOS
-            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-            finalStatus = status;
-        }
-
-        // Stop here if the user did not grant permissions
-        if (finalStatus !== 'granted') {
-            this.navigateScreen();
-            return;
-        }
-
-        // Get the token that uniquely identifies this device
-        let tokenDevice = await Notifications.getExpoPushTokenAsync();
-
-        // POST the token to your backend server from where you can retrieve it to send push notifications.
-        return SaveTokenDevice(token, tokenDevice).then((data) => {
-            if (!data.error) {
-                //save token device
-                AsyncStorage.setItem(Secret.tokenDeviceSave, tokenDevice).then(() => {
-                    // navigate to home screen
-                    this.navigateScreen();
-                });
-            }
-        });
-    }
-
-    /**
-     * if user has login before,redirec to home screen
-     */
-    isLoginBefore = () => {
-        AsyncStorage.getItem(Secret.tokenRequestApi).then((token) => {
-            if (token) {
-                this.props.navigation.navigate("tabStack")
-            }
-        });
+    state = {
+        username: '',
+        password: '',
+        showSpiner: false,
     }
 
     login = () => {
@@ -87,34 +25,17 @@ export default class LoginScreen extends Component {
             this.setState({ showSpiner: true })
             NetInfo.isConnected.fetch().then(isConnected => {
                 if (isConnected) {
-                    Login(this.state.username, this.state.password)
-                        .then((data) => {
-                            if (!data.error) {
-                                AsyncStorage.setItem(Secret.tokenRequestApi, data.Token)
-                                // get token device and send to server for the first login
-                                AsyncStorage.getItem(Secret.tokenDeviceSave).then((tokenDevice) => {
-                                    if (tokenDevice) {
-                                        this.navigateScreen();
-                                    } else {
-                                        this.registerPushNotifyAsync(data.Token);
-                                    }
-                                })
-
-                            } else {
-                                ResponseApi("Email (phone) hoặc mật khẩu không đúng", (context) => {
-                                    context.setState({ showSpiner: false })
-                                }, this);
-                            }
-                        }).catch((err) => {
-                            this.setState({ showSpiner: false })
-                        });
+                    setTimeout(() => {
+                        this.setState({ showSpiner: false })
+                        this.props.navigation.navigate("drawerStack");
+                    }, 3000);
                 } else {
-                    alert("Không có kết nối mạng")
+                    alert("No internet connection")
                 }
             });
             return;
         }
-        ResponseApi("Email(số điện thoại) và mật khẩu được yêu cầu", () => { }, this);
+        ResponseApi("Email and Password is required", () => { }, this);
     }
 
     navigateScreen() {
@@ -136,13 +57,13 @@ export default class LoginScreen extends Component {
                 <View style={styles.boxBodyLogin}>
                     <View style={styles.boxBodyLoginContext}>
                         <InputIcon name="ios-person-outline"
-                            placeholder="Email hoặc số điện thoại"
+                            placeholder="Email"
                             value={(username) => {
                                 this.state.username = username;
                             }}
                         />
                         <InputIcon name="ios-lock-outline"
-                            placeholder="Mật khẩu"
+                            placeholder="Password"
                             value={(password) => {
                                 this.state.password = password;
                             }}
@@ -155,21 +76,10 @@ export default class LoginScreen extends Component {
                         </TouchableHighlight>
 
                         <View style={styles.boxHelp}>
-                            <View style={styles.boxHelpHeader}>
-                                <Text style={styles.boxHelpHeaderTxtLeft}
-                                    onPress={() => this.props.navigation.navigate('signupScreen')}
-                                >Đăng ký</Text>
-                                <Text style={styles.boxHelpHeaderTxtRight}
-                                    onPress={() => this.props.navigation.navigate('fPasswordScreen')}
-                                >Quên mật khẩu?</Text>
-                            </View>
                             <View style={styles.boxHelpOr}>
-                                <Text style={styles.line}></Text>
-                                <Text style={styles.lineOr}>hoặc</Text>
-                                <Text style={styles.line}></Text>
+                                <Text style={styles.line}>Forgot password</Text>
                             </View>
                         </View>
-                        <LoginFacebook />
                     </View>
                 </View>
             </View>
