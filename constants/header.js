@@ -9,6 +9,12 @@ import { Ionicons } from '@expo/vector-icons';
 export default header = function (navigation, title) {
     return {
         title: title,
+        headerTintColor: '#fff',
+        headerStyle: {
+            //borderBottomWidth: 0,
+            backgroundColor: '#02b294',
+            //elevation: 0,
+        },
         headerLeft: (
             <TouchableHighlight
                 onPress={() => navigation.openDrawer()}
@@ -17,7 +23,7 @@ export default header = function (navigation, title) {
                     marginLeft: 10
                 }}
             >
-                <Ionicons name="ios-menu-outline" size={32} color="#000" />
+                <Ionicons name="ios-menu-outline" size={32} color="#fff" />
             </TouchableHighlight>
         ),
     }

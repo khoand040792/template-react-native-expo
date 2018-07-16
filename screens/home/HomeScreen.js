@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { Platform, StyleSheet, Text, TouchableHighlight, View, StatusBar } from 'react-native';
 import HeaderNavigation from '../../constants/header';
 
 export default class HomeScreen extends React.Component {
@@ -15,6 +15,7 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar />
         <Text style={styles.txtTitle}>Welcome Back!</Text>
         <TouchableHighlight
           style={styles.btnLogout}
@@ -36,7 +37,8 @@ const styles = StyleSheet.create({
   },
   txtTitle: {
     fontWeight: 'bold',
-    fontSize: 30
+    fontSize: 30,
+    color: '#fff'
   },
   btnLogout: {
     backgroundColor: '#1f8696',
@@ -46,6 +48,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   txtBtnLogout: {
-    fontSize: 20
+    fontSize: 20,
+    color: '#fff'
   }
 });

@@ -13,7 +13,7 @@ export default class InputIcon extends Component {
                         name={this.props.name}
                         size={this.props.size ? this.props.size : 30}
                         style={styles.icon}
-                        color={'#abb2c0'}
+                        color={'#fff'}
                     />
                     <TextInput
                         returnKeyType={isSearchInput ? returnType : "next"}
@@ -39,20 +39,27 @@ const styles = StyleSheet.create({
     },
     container: {
         marginTop: 15,
-        height: 50,
+        height: 52,
         width: '100%',
         borderWidth: 1,
-        borderColor: '#efefef'
+        borderColor: '#fff',
+        backgroundColor: '#fff',
+        borderRadius: 5
     },
     icon: {
         paddingHorizontal: 10,
-        flex: 1
+        paddingVertical: 5,
+        backgroundColor: '#02b294',
+        borderRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     content: {
         padding: 5,
         flexDirection: 'row',
     },
     inputTxt: {
-        flex: 5
+        flex: 6,
+        marginLeft: 15
     }
 })

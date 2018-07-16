@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import {
     View, StyleSheet, Text, TouchableHighlight,
-    Image, AsyncStorage, Alert, NetInfo
+    Image, Alert, NetInfo
 } from 'react-native';
 import InputIcon from '../../components/InputIcon';
-import { Ionicons } from '@expo/vector-icons';
 import ResponseApi from '../../api/ResponseApi';
 import SpinFullScreen from '../../components/ActivityIndicator';
 
@@ -19,16 +18,20 @@ export default class LoginScreen extends Component {
         showSpiner: false,
     }
 
+    setupAndNavigate() {
+        setTimeout(() => {
+            this.setState({ showSpiner: false })
+            this.props.navigation.navigate("drawerStack");
+        }, 3000);
+    }
+
     login = () => {
         if (this.state.username && this.state.password) {
             // call api login
             this.setState({ showSpiner: true })
             NetInfo.isConnected.fetch().then(isConnected => {
                 if (isConnected) {
-                    setTimeout(() => {
-                        this.setState({ showSpiner: false })
-                        this.props.navigation.navigate("drawerStack");
-                    }, 3000);
+                    this.setupAndNavigate()
                 } else {
                     alert("No internet connection")
                 }
@@ -36,11 +39,6 @@ export default class LoginScreen extends Component {
             return;
         }
         ResponseApi("Email and Password is required", () => { }, this);
-    }
-
-    navigateScreen() {
-        this.setState({ showSpiner: false })
-        this.props.navigation.navigate('tabStack')
     }
 
     render() {
@@ -72,13 +70,11 @@ export default class LoginScreen extends Component {
                             onPress={this.login}
                             style={styles.btnLogin}
                         >
-                            <Text style={styles.btnLoginTxt}>Đăng nhập</Text>
+                            <Text style={styles.btnLoginTxt}>Login</Text>
                         </TouchableHighlight>
 
                         <View style={styles.boxHelp}>
-                            <View style={styles.boxHelpOr}>
-                                <Text style={styles.line}>Forgot password</Text>
-                            </View>
+                            <Text style={styles.line}>Forgot password?</Text>
                         </View>
                     </View>
                 </View>
@@ -91,7 +87,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: 15,
-        backgroundColor: '#fff',
+        backgroundColor: '#02b294',
         flexDirection: 'column'
     },
     btnLogin: {
@@ -121,12 +117,10 @@ const styles = StyleSheet.create({
     },
     boxHelp: {
         marginVertical: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     boxHelpHeader: {
-        flexDirection: 'row'
-    },
-    boxHelpOr: {
-        marginTop: 10,
         flexDirection: 'row'
     },
     boxHelpHeaderTxtRight: {
@@ -139,14 +133,9 @@ const styles = StyleSheet.create({
         color: '#68595d'
     },
     line: {
-        borderBottomColor: '#68595d',
+        borderBottomColor: '#fff',
         borderBottomWidth: 0.5,
-        flex: 2
-    },
-    lineOr: {
-        paddingHorizontal: 10,
-        flex: 1,
-        textAlign: 'center'
+        color: '#fff'
     },
     boxBodyLogin: {
         flex: 2,
@@ -155,7 +144,7 @@ const styles = StyleSheet.create({
         marginTop: 25
     },
     boxBodyLoginContext: {
-        width: "90%",
+        width: "88%",
         height: "100%"
     }
 });
