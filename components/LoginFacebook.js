@@ -57,7 +57,7 @@ export default class LoginFacebook extends Component {
             >
                 <View style={styles.btnLoginFbBox}>
                     <Ionicons name="logo-facebook" size={40} color={"#fff"} style={styles.iconFb} />
-                    <Text style={styles.btnLoginFbTxt}>Đăng nhập với Facebook</Text>
+                    <Text style={styles.btnLoginFbTxt}>Login with Facebook</Text>
                 </View>
             </TouchableHighlight>
         )
